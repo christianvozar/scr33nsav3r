@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ConfigureSheetView: View {
     @ObservedObject var viewModel: SettingsViewModel
-    @Environment(\.dismiss) var dismiss    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
@@ -32,15 +32,30 @@ struct ConfigureSheetView: View {
             }
             .padding(.horizontal)
             
-            // Add the "OK" button
-            Button("OK") {
-                //controller.saveSettingsAndClose()
-                viewModel.saveSettings()
-                dismiss()
+            HStack{
+                Spacer()
+                // Add the "OK" button
+                Button(action: {
+                    //controller.saveSettingsAndClose()
+                    viewModel.saveSettingsAndClose()
+                    //viewModel.saveSettings()
+                    dismiss()
+                }) {
+                    Text("OK")
+                }
+                .keyboardShortcut(.defaultAction)
+                .padding(.bottom)
             }
-            .keyboardShortcut(.defaultAction)
-            .padding(.bottom)
         }
         .padding()
     }
 }
+
+/*
+ Button(action: {
+ NSColorPanel.shared.close()
+ NSApp.endSheet(window)
+ }) {
+ Text("Close Configure Sheet")
+ }
+ */

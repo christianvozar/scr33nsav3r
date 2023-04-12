@@ -12,10 +12,9 @@ class scr33nsav3rView: ScreenSaverView {
     private var direction: CGFloat = 1
     private var currentOffset: CGFloat = 0
     private var maxOffset: CGFloat = 0
+    private var currentImage: NSImage?
     private let defaults = UserDefaults.init(suiteName: "wtf.a3ther.scr33nsav3r")!
     private let viewModel = SettingsViewModel()
-    
-    // ConfigureSheetController instance for handling configureSheet
     lazy var sheetController: ConfigureSheetController = {
         let settingsViewModel = SettingsViewModel()
         return ConfigureSheetController(viewModel: settingsViewModel)
@@ -31,20 +30,20 @@ class scr33nsav3rView: ScreenSaverView {
         initialize()
     }
     
-    // Initialize scr33nsav3r
     func initialize() {
         // Set the animation time interval
         //animationTimeInterval = 1 / 30.0
         loadImage()
-        // Update animation time interval when speed index changes
         sheetController.viewModel.onAnimationSpeedIndexChanged = { [weak self] in
             self?.updateAnimationTimeInterval()
         }
         updateAnimationTimeInterval()
     }
     
-    // Configuration sheet properties
-    override public var hasConfigureSheet: Bool { return true }
+    override public var hasConfigureSheet: Bool {
+        return true
+    }
+    
     override var configureSheet: NSWindow? {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
@@ -53,11 +52,10 @@ class scr33nsav3rView: ScreenSaverView {
             defer: false
         )
         window.isReleasedWhenClosed = false
-        window.contentView = NSHostingView(rootView: ConfigureSheetView(viewModel: viewModel))
+        window.contentView = NSHostingView(rootView: ConfigureSheetView(viewModel: SettingsViewModel()))
         return window
     }
     
-    // Load image to be scrolled
     private func loadImage() {
         guard let urlString = sheetController.viewModel.randomSelectedArtistURL,
               let imageURL = URL(string: urlString) else { return }
@@ -68,10 +66,8 @@ class scr33nsav3rView: ScreenSaverView {
             DispatchQueue.main.async {
                 self?.image = downloadedImage
                 if let imageSize = self?.image?.size, let screenHeight = self?.bounds.height {
-                    let aspectRatio = imageSize.width / imageSize.height
-                    let targetHeight = (self?.bounds.width ?? 0) / aspectRatio
-                    // Set position to the difference between the screen height and target height
-                    self?.position = screenHeight - targetHeight
+                    // Updated position calculation to start at the top of the screen
+                    self?.position = screenHeight - imageSize.height
                 }
                 self?.setNeedsDisplay(self?.bounds ?? .zero)
             }
@@ -79,14 +75,12 @@ class scr33nsav3rView: ScreenSaverView {
         downloadTask.resume()
     }
     
-    // Update the animation time interval based on the user-selected speed
     private func updateAnimationTimeInterval() {
         let animationSpeeds: [TimeInterval] = [0.2, 0.1, 0.05, 0.025]
         let index = sheetController.viewModel.animationSpeedIndex
         self.animationTimeInterval = animationSpeeds[index]
     }
     
-    // Draw image on the screen
     override func draw(_ rect: NSRect) {
         super.draw(rect)
         
@@ -100,7 +94,7 @@ class scr33nsav3rView: ScreenSaverView {
         }
     }
     
-    // Animation state enum for handling scrolling and pausing
+    // Add an enum to handle the animation state
     enum AnimationState {
         case scrolling
         case paused
@@ -110,7 +104,6 @@ class scr33nsav3rView: ScreenSaverView {
     private var pauseStartTime: TimeInterval = 0
     private let pauseDuration: TimeInterval = 3
     
-    // Handle animation of image as it scrolls
     override func animateOneFrame() {
         switch animationState {
         case .scrolling:

@@ -3,11 +3,16 @@
 import SwiftUI
 import Combine
 
+protocol SettingsViewModelDelegate: AnyObject {
+    func saveSettingsAndClose()
+}
+
 class SettingsViewModel: ObservableObject {
     @Published var urlString: String = ""
     @Published var urlList: [String]
     @Published var includeNSFW: Bool = false
     @Published var selectedArtist: String = "Ungenannt"
+    weak var delegate: SettingsViewModelDelegate?
     
     var onAnimationSpeedIndexChanged: (() -> Void)?
     
@@ -25,6 +30,9 @@ class SettingsViewModel: ObservableObject {
         self.defaults = UserDefaults.init(suiteName: bundleIdentifier)!
         self.animationSpeedIndex = defaults.integer(forKey: "animationSpeedIndex")
         self.urlList = defaults.stringArray(forKey: "urlList") ?? ["https://16colo.rs/pack/acid-100/x2/LD-RIP.ANS.png"]
+        if let selectedArtist = defaults.string(forKey: "selectedArtist") {
+            self.selectedArtist = selectedArtist
+        }
     }
     
     let artistURLs: [String: [String]] = [
@@ -134,22 +142,14 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    func addUrl() {
-        guard !urlString.isEmpty, !urlList.contains(urlString) else { return }
-        urlList.append(urlString)
-        saveSettings()
-    }
-    
-    func removeUrl(url: String) {
-        if let index = urlList.firstIndex(of: url) {
-            urlList.remove(at: index)
-        }
-        saveSettings()
-    }
-    
     func saveSettings() {
-        defaults.set(urlList, forKey: "urlList")
         defaults.set(animationSpeedIndex, forKey: "animationSpeedIndex")
         defaults.synchronize()
+    }
+    
+    func saveSettingsAndClose() {
+        defaults.set(animationSpeedIndex, forKey: "animationSpeedIndex")
+        defaults.synchronize()
+        delegate?.saveSettingsAndClose()
     }
 }
