@@ -40,19 +40,27 @@ class scr33nsav3rView: ScreenSaverView {
         updateAnimationTimeInterval()
     }
     
-    override public var hasConfigureSheet: Bool {
-        return true
-    }
+    /*
+     // Old but somewhat functional no OK button functions
+     
+     override public var hasConfigureSheet: Bool { return true }
+     override var configureSheet: NSWindow? {
+     let window = NSWindow(
+     contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+     styleMask: [.titled, .closable],
+     backing: .buffered,
+     defer: false
+     )
+     window.isReleasedWhenClosed = false
+     window.contentView = NSHostingView(rootView: ConfigureSheetView(viewModel: SettingsViewModel()))
+     return window
+     }
+     */
     
+    override public var hasConfigureSheet: Bool { return true }
     override var configureSheet: NSWindow? {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-            styleMask: [.titled, .closable],
-            backing: .buffered,
-            defer: false
-        )
-        window.isReleasedWhenClosed = false
-        window.contentView = NSHostingView(rootView: ConfigureSheetView(viewModel: SettingsViewModel()))
+        let sheetController = ConfigureSheetController(viewModel: viewModel)
+        let window = sheetController.window
         return window
     }
     
@@ -66,8 +74,11 @@ class scr33nsav3rView: ScreenSaverView {
             DispatchQueue.main.async {
                 self?.image = downloadedImage
                 if let imageSize = self?.image?.size, let screenHeight = self?.bounds.height {
-                    // Updated position calculation to start at the top of the screen
+                    // Calculate initial position based on the image height
                     self?.position = screenHeight - imageSize.height
+                    
+                    // Update the maximum offset that can be scrolled
+                    self?.maxOffset = max(0, imageSize.height - screenHeight)
                 }
                 self?.setNeedsDisplay(self?.bounds ?? .zero)
             }
@@ -158,12 +169,16 @@ class ConfigureSheetController: NSObject, NSWindowDelegate {
     
     func saveSettingsAndClose() {
         viewModel.saveSettings()
-        window.close()
+        dismissSheet()
     }
     
     // When the window is closing, save settings
     func windowWillClose(_ notification: Notification) {
         viewModel.saveSettings()
         NSApp.stopModal()
+    }
+    
+    private func dismissSheet() {
+        NSApp.mainWindow?.endSheet(NSApp.mainWindow?.attachedSheet ?? NSApp.mainWindow!.contentViewController!.view.window!)
     }
 }

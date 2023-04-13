@@ -4,7 +4,7 @@ import SwiftUI
 
 struct ConfigureSheetView: View {
     @ObservedObject var viewModel: SettingsViewModel
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
@@ -39,15 +39,20 @@ struct ConfigureSheetView: View {
                     //controller.saveSettingsAndClose()
                     viewModel.saveSettingsAndClose()
                     //viewModel.saveSettings()
-                    dismiss()
+                    self.dismissSheet()
                 }) {
                     Text("OK")
                 }
-                .keyboardShortcut(.defaultAction)
+                .keyboardShortcut(.return)
                 .padding(.bottom)
             }
         }
         .padding()
+    }
+    
+    private func dismissSheet() {
+        presentationMode.wrappedValue.dismiss()
+        NSApp.mainWindow?.endSheet(NSApp.mainWindow?.attachedSheet ?? NSApp.mainWindow!.contentViewController!.view.window!)
     }
 }
 

@@ -8,17 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		9E8CC1BF29E4780E00F784A0 /* scr33nsav3rView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8CC1BE29E4780E00F784A0 /* scr33nsav3rView.swift */; };
-		9E8CC1C129E4827500F784A0 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E8CC1C029E4827500F784A0 /* Media.xcassets */; };
 		9E8CC1C329E4850600F784A0 /* ConfigureSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8CC1C229E4850600F784A0 /* ConfigureSheetView.swift */; };
 		9E8CC1C829E497EB00F784A0 /* ConfigureSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8CC1C729E497EB00F784A0 /* ConfigureSheetViewModel.swift */; };
+		9E8CC1CC29E7579800F784A0 /* thumbnail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8CC1CB29E7579800F784A0 /* thumbnail@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9E8CC1B229E46A0C00F784A0 /* scr33nsav3r.saver */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = scr33nsav3r.saver; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E8CC1BE29E4780E00F784A0 /* scr33nsav3rView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scr33nsav3rView.swift; sourceTree = "<group>"; };
-		9E8CC1C029E4827500F784A0 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		9E8CC1C229E4850600F784A0 /* ConfigureSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSheetView.swift; sourceTree = "<group>"; };
 		9E8CC1C729E497EB00F784A0 /* ConfigureSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSheetViewModel.swift; sourceTree = "<group>"; };
+		9E8CC1CB29E7579800F784A0 /* thumbnail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,10 +51,9 @@
 		9E8CC1B429E46A0C00F784A0 /* scr33nsav3r */ = {
 			isa = PBXGroup;
 			children = (
-				9E8CC1C629E497C800F784A0 /* Models */,
+				9E8CC1CB29E7579800F784A0 /* thumbnail@2x.png */,
 				9E8CC1C529E497C200F784A0 /* ViewModels */,
 				9E8CC1C429E497BA00F784A0 /* Views */,
-				9E8CC1C029E4827500F784A0 /* Media.xcassets */,
 			);
 			path = scr33nsav3r;
 			sourceTree = "<group>";
@@ -74,13 +73,6 @@
 				9E8CC1C729E497EB00F784A0 /* ConfigureSheetViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		9E8CC1C629E497C800F784A0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,6 +96,7 @@
 				9E8CC1AE29E46A0C00F784A0 /* Sources */,
 				9E8CC1AF29E46A0C00F784A0 /* Frameworks */,
 				9E8CC1B029E46A0C00F784A0 /* Resources */,
+				9E4FCA3629E85E040099049E /* Clear Attributes */,
 			);
 			buildRules = (
 			);
@@ -152,11 +145,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E8CC1C129E4827500F784A0 /* Media.xcassets in Resources */,
+				9E8CC1CC29E7579800F784A0 /* thumbnail@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9E4FCA3629E85E040099049E /* Clear Attributes */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Clear Attributes";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "xattr -cr ~/Library/Developer/Xcode/DerivedData || echo Clear\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9E8CC1AE29E46A0C00F784A0 /* Sources */ = {
@@ -287,7 +301,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = PTVAQ77DTY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -309,7 +323,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 67;
 				DEVELOPMENT_TEAM = PTVAQ77DTY;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
